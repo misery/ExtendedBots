@@ -21,6 +21,7 @@ setup(
         ],
     },
     install_requires=[
+        'reviewbot-worker>=1.0',
         'RBTools>=1.0',
     ],
     classifiers=[
