@@ -17,10 +17,12 @@ setup(
     packages=[str('extended_bots')],
     entry_points={
         'reviewbot.tools': [
+            'chardetector = extended_bots.chardetector:ChardetectorTool',
             'regex = extended_bots.regex:RegexTool',
         ],
     },
     install_requires=[
+        'chardet>=2.3.0',
         'reviewbot-worker>=1.0',
         'RBTools>=1.0',
     ],
