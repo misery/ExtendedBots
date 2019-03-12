@@ -18,6 +18,7 @@ setup(
     entry_points={
         'reviewbot.tools': [
             'chardetector = extended_bots.chardetector:ChardetectorTool',
+            'liquibase = extended_bots.liquibase:LiquibaseTool',
             'regex = extended_bots.regex:RegexTool',
         ],
     },
