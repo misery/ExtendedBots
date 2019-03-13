@@ -1,2 +1,3 @@
+buildbot==1.8.1
 reviewbot-worker
 flake8
