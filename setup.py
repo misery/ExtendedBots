@@ -24,7 +24,7 @@ setup(
     },
     install_requires=[
         'chardet>=2.3.0',
-        'reviewbot-worker>=1.0',
+        'reviewbot-worker>=3.0',
         'RBTools>=1.0',
     ],
     classifiers=[

@@ -3,10 +3,10 @@ from __future__ import unicode_literals
 from os.path import splitext
 import re
 
-from reviewbot.tools import Tool
+from reviewbot.tools import BaseTool
 
 
-class RegexTool(Tool):
+class RegexTool(BaseTool):
     """Review Bot tool to run regex."""
 
     name = 'regex'
@@ -46,7 +46,7 @@ class RegexTool(Tool):
         },
     ]
 
-    def handle_file(self, f, settings):
+    def handle_file(self, f, settings, **kwargs):
         """Perform a review of a single file.
 
         Args:

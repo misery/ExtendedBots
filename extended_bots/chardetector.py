@@ -3,10 +3,10 @@ from __future__ import unicode_literals
 import chardet
 from os.path import splitext
 
-from reviewbot.tools import Tool
+from reviewbot.tools import BaseTool
 
 
-class ChardetectorTool(Tool):
+class ChardetectorTool(BaseTool):
     """Review Bot tool to run chardet."""
 
     name = 'chardetector'
@@ -38,7 +38,7 @@ class ChardetectorTool(Tool):
         },
     ]
 
-    def handle_file(self, f, settings):
+    def handle_file(self, f, settings, **kwargs):
         """Perform a review of a single file.
 
         Args:

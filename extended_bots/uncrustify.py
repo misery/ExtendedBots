@@ -3,12 +3,12 @@ from __future__ import unicode_literals
 import os
 from os.path import splitext
 
-from reviewbot.tools import Tool
+from reviewbot.tools import BaseTool
 from reviewbot.utils.filesystem import make_tempfile
 from reviewbot.utils.process import execute, is_exe_in_path
 
 
-class UncrustifyTool(Tool):
+class UncrustifyTool(BaseTool):
     """Review Bot tool to run formatting tool uncrustify."""
 
     name = 'uncrustify'
@@ -67,7 +67,7 @@ class UncrustifyTool(Tool):
         """
         return is_exe_in_path('uncrustify') and is_exe_in_path('diff')
 
-    def handle_file(self, f, settings):
+    def handle_file(self, f, settings, **kwargs):
         """Perform a review of a single file.
 
         Args:
