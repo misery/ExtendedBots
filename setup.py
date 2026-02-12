@@ -20,10 +20,13 @@ setup(
             'chardetector = extended_bots.chardetector:ChardetectorTool',
             'regex = extended_bots.regex:RegexTool',
             'uncrustify = extended_bots.uncrustify:UncrustifyTool',
+            'ruff_ext = extended_bots.ruff:RuffExtTool',
+            'typos_ext = extended_bots.typos:TyposExtTool',
         ],
     },
     install_requires=[
         'chardet>=2.3.0',
+        'ruff>=0.14',
         'reviewbot-worker>=3.0',
         'RBTools>=1.0',
     ],
