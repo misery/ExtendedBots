@@ -61,7 +61,7 @@ class RegexTool(BaseTool):
         if file_ext:
             ext = splitext(f.dest_file)[1][1:]
 
-            if not ext.lower() in file_ext.split(','):
+            if ext.lower() not in file_ext.split(','):
                 # Ignore the file.
                 return
 
