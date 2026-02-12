@@ -1,8 +1,8 @@
 from __future__ import unicode_literals
 
-import chardet
 from os.path import splitext
 
+import chardet
 from reviewbot.tools import BaseTool
 
 

@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 
-from os.path import splitext
 import re
+from os.path import splitext
 
 from reviewbot.tools import BaseTool
 
@@ -79,7 +79,7 @@ class RegexTool(BaseTool):
                 comment = s[1]
             list.append((re.compile(regex, re.I), comment.strip()))
 
-        with open(path, 'r') as content:
+        with open(path) as content:
             line_num = 0
             for line in content:
                 line_num += 1
