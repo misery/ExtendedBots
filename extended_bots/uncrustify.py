@@ -31,7 +31,7 @@ class UncrustifyTool(BaseTool):
                     'cols': 80,
                     'rows': 10,
                 },
-            }
+            },
         },
         {
             'name': 'max_diff_length',
@@ -50,7 +50,7 @@ class UncrustifyTool(BaseTool):
             'field_options': {
                 'label': 'Scan files',
                 'help_text': 'Comma-separated list of file extensions '
-                             'to scan. Leave it empty to check any file.',
+                'to scan. Leave it empty to check any file.',
                 'required': False,
             },
         },
@@ -98,18 +98,25 @@ class UncrustifyTool(BaseTool):
             [
                 'uncrustify',
                 '--if-changed',
-                '-c', cfg,
-                '-f', path,
-                '-o', formatted,
-            ])
+                '-c',
+                cfg,
+                '-f',
+                path,
+                '-o',
+                formatted,
+            ]
+        )
 
         if os.path.getsize(formatted) > 0:
             diff = execute(
                 [
-                    'diff', '--unified=0',
-                    path, formatted,
+                    'diff',
+                    '--unified=0',
+                    path,
+                    formatted,
                 ],
-                ignore_errors=True)
+                ignore_errors=True,
+            )
 
             message = []
             start = None
@@ -135,5 +142,6 @@ class UncrustifyTool(BaseTool):
             if len(message) > 0:
                 msg += '\n```diff\n' + '\n'.join(message) + '\n```'
 
-            f.comment(msg, abs(int(start_line)), int(num_lines),
-                      rich_text=True)
+            f.comment(
+                msg, abs(int(start_line)), int(num_lines), rich_text=True
+            )

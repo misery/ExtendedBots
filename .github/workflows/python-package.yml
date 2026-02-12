@@ -13,26 +13,26 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.8, 3.9, '3.10', 3.11, 3.12, 3.13]
+        python-version: [3.8, 3.9, '3.10', 3.11, 3.12, 3.13, 3.14]
 
     steps:
     - uses: actions/checkout@v6
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip setuptools
+        python -m pip install --upgrade pip "setuptools<82"
         python -m pip list
         python -m pip install flake8 pytest wheel build
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint with flake8
       run: |
-        # stop the build if there are Python syntax errors or undefined names
         flake8 . --count --show-source --statistics
-        # exit-zero treats all errors as warnings.
         flake8 . --count --exit-zero --statistics
+        ruff check
+        ruff format --exit-non-zero-on-format
     - name: Installation
       run: |
         python -m build --wheel --no-isolation

@@ -2,8 +2,8 @@ from __future__ import unicode_literals
 
 from setuptools import setup
 
-PACKAGE = "rbExtendedBots"
-VERSION = "0.0.3"
+PACKAGE = 'rbExtendedBots'
+VERSION = '0.0.3'
 
 setup(
     name=PACKAGE,

@@ -110,8 +110,7 @@ class RuffExtTool(BaseTool):
         try:
             results = json.loads(output)
         except json.JSONDecodeError:
-            logger.error('Failed to parse ruff output as JSON: %s',
-                         output)
+            logger.error('Failed to parse ruff output as JSON: %s', output)
             return
 
         # Process each result
@@ -121,8 +120,7 @@ class RuffExtTool(BaseTool):
 
             if not file_obj:
                 logger.warning(
-                    'ruff reported issue for unknown file: %s',
-                    filename
+                    'ruff reported issue for unknown file: %s', filename
                 )
                 continue
 

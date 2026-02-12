@@ -11,7 +11,7 @@ class ChardetectorTool(BaseTool):
 
     name = 'chardetector'
     version = '1.0'
-    description = ('Checks file encoding')
+    description = 'Checks file encoding'
     timeout = 30
     options = [
         {
@@ -21,7 +21,7 @@ class ChardetectorTool(BaseTool):
             'field_options': {
                 'label': 'Check files',
                 'help_text': 'Comma-separated list of file extensions'
-                             ' to scan.',
+                ' to scan.',
                 'required': True,
             },
         },
@@ -31,8 +31,7 @@ class ChardetectorTool(BaseTool):
             'default': 'ascii',
             'field_options': {
                 'label': 'Allowed file encoding',
-                'help_text': 'Comma-separated list of allowed file'
-                             ' encoding.',
+                'help_text': 'Comma-separated list of allowed file encoding.',
                 'required': True,
             },
         },
@@ -68,5 +67,8 @@ class ChardetectorTool(BaseTool):
                 confidence = parsed.get('confidence')
 
                 if encoding not in allowed:
-                    f.comment('Encoding "%s" not allowed (confidence: %s)' %
-                              (encoding, confidence), line_num)
+                    f.comment(
+                        'Encoding "%s" not allowed (confidence: %s)'
+                        % (encoding, confidence),
+                        line_num,
+                    )

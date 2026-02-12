@@ -21,8 +21,8 @@ class RegexTool(BaseTool):
             'field_options': {
                 'label': 'regex',
                 'help_text': 'A regex per line separated optionally '
-                             'by a : for a comment. '
-                             'Example: TODO|FIXME:Do that!',
+                'by a : for a comment. '
+                'Example: TODO|FIXME:Do that!',
                 'required': True,
             },
             'widget': {
@@ -31,7 +31,7 @@ class RegexTool(BaseTool):
                     'cols': 80,
                     'rows': 10,
                 },
-            }
+            },
         },
         {
             'name': 'file_ext',
@@ -40,7 +40,7 @@ class RegexTool(BaseTool):
             'field_options': {
                 'label': 'Scan files',
                 'help_text': 'Comma-separated list of file extensions '
-                             'to scan. Leave it empty to check any file.',
+                'to scan. Leave it empty to check any file.',
                 'required': False,
             },
         },
@@ -85,5 +85,8 @@ class RegexTool(BaseTool):
                 line_num += 1
                 for entry in list:
                     if entry[0].search(line):
-                        f.comment('%s (used pattern "%s")' %
-                                  (entry[1], entry[0].pattern), line_num)
+                        f.comment(
+                            '%s (used pattern "%s")'
+                            % (entry[1], entry[0].pattern),
+                            line_num,
+                        )
