@@ -53,9 +53,7 @@ class RuffExtTool(BaseTool):
             'default': False,
             'field_options': {
                 'label': 'Check formatting',
-                'help_text': (
-                    'Checks if the file is formatted correctly.'
-                ),
+                'help_text': ('Checks if the file is formatted correctly.'),
                 'required': False,
             },
         },
@@ -108,8 +106,7 @@ class RuffExtTool(BaseTool):
         try:
             results = json.loads(output)
         except json.JSONDecodeError:
-            logger.error('Failed to parse ruff output as JSON: %s',
-                         output)
+            logger.error('Failed to parse ruff output as JSON: %s', output)
             return
 
         # Process each result
@@ -119,8 +116,7 @@ class RuffExtTool(BaseTool):
 
             if not file_obj:
                 logger.warning(
-                    'ruff reported issue for unknown file: %s',
-                    filename
+                    'ruff reported issue for unknown file: %s', filename
                 )
                 continue
 
@@ -156,7 +152,7 @@ class RuffExtTool(BaseTool):
 
             for line in output.splitlines():
                 if line.startswith('Would reformat:'):
-                    filename = line.split(":", 1)[1].strip()
+                    filename = line.split(':', 1)[1].strip()
                     file_obj = file_map.get(filename)
                     file_obj.comment(
                         first_line=0,
