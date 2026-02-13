@@ -47,20 +47,19 @@ class RuffExtTool(BaseTool):
                 },
             },
         },
+        {
+            'name': 'formatting',
+            'field_type': 'django.forms.BooleanField',
+            'default': False,
+            'field_options': {
+                'label': 'Check formatting',
+                'help_text': (
+                    'Checks if the file is formatted correctly.'
+                ),
+                'required': False,
+            },
+        },
     ]
-
-    def build_base_command(self, **kwargs):
-        """Build the base command line used to review files.
-
-        Args:
-            **kwargs (dict):
-                Additional keyword arguments.
-
-        Returns:
-            list of str:
-            The base command line.
-        """
-        return ['ruff', 'check', '--output-format=json']
 
     def handle_files(
         self,
@@ -92,12 +91,11 @@ class RuffExtTool(BaseTool):
 
         settings = self.settings
         config_content = settings.get('config', '').strip()
+        config_file = make_tempfile(config_content.encode('utf-8'))
 
         # Build the command
-        cmdline = self.build_base_command()
-        config_file = make_tempfile(config_content.encode('utf-8'))
+        cmdline = ['ruff', 'check', '--output-format=json']
         cmdline.extend(['--config', config_file])
-
         cmdline.extend(file_map.keys())
 
         # Execute ruff using the process utility
@@ -110,7 +108,8 @@ class RuffExtTool(BaseTool):
         try:
             results = json.loads(output)
         except json.JSONDecodeError:
-            logger.error('Failed to parse ruff output as JSON: %s', output)
+            logger.error('Failed to parse ruff output as JSON: %s',
+                         output)
             return
 
         # Process each result
@@ -120,7 +119,8 @@ class RuffExtTool(BaseTool):
 
             if not file_obj:
                 logger.warning(
-                    'ruff reported issue for unknown file: %s', filename
+                    'ruff reported issue for unknown file: %s',
+                    filename
                 )
                 continue
 
@@ -143,3 +143,23 @@ class RuffExtTool(BaseTool):
                 start_column=location.get('column'),
                 error_code=result.get('code', ''),
             )
+
+        # Build the command for formatting
+        if settings.get('formatting'):
+            cmdline = ['ruff', 'format', '--check']
+            cmdline.extend(file_map.keys())
+
+            output = execute(
+                cmdline,
+                ignore_errors=True,
+            )
+
+            for line in output.splitlines():
+                if line.startswith('Would reformat:'):
+                    filename = line.split(":", 1)[1].strip()
+                    file_obj = file_map.get(filename)
+                    file_obj.comment(
+                        first_line=0,
+                        text=f'File "{file_obj.dest_file}" is not formatted.',
+                        error_code='formatting',
+                    )
