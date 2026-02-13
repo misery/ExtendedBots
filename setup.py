@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from setuptools import setup
 
 PACKAGE = 'rbExtendedBots'
-VERSION = '0.0.5'
+VERSION = '0.0.6'
 
 setup(
     name=PACKAGE,
