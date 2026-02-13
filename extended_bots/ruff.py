@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 from typing import TYPE_CHECKING
 
 from reviewbot.tools.base import BaseTool
@@ -87,12 +88,17 @@ class RuffExtTool(BaseTool):
         if not file_map:
             return
 
+        def get_file(filename):
+            if filename.startswith('/'):
+                return file_map.get(filename)
+            return file_map.get(os.getcwd() + '/' + filename)
+
         settings = self.settings
         config_content = settings.get('config', '').strip()
         config_file = make_tempfile(config_content.encode('utf-8'))
 
         # Build the command
-        cmdline = ['ruff', 'check', '--output-format=json']
+        cmdline = ['ruff', 'check', '--output-format=json', '--force-exclude']
         cmdline.extend(['--config', config_file])
         cmdline.extend(file_map.keys())
 
@@ -112,13 +118,10 @@ class RuffExtTool(BaseTool):
         # Process each result
         for result in results:
             filename = result.get('filename')
-            file_obj = file_map.get(filename)
+            file_obj = get_file(filename)
 
             if not file_obj:
-                logger.warning(
-                    'ruff reported issue for unknown file: %s', filename
-                )
-                continue
+                raise Exception(f'Unknown file: {filename}')
 
             location = result.get('location', {})
             endlocation = result.get('end_location', {})
@@ -142,7 +145,8 @@ class RuffExtTool(BaseTool):
 
         # Build the command for formatting
         if settings.get('formatting'):
-            cmdline = ['ruff', 'format', '--check']
+            cmdline = ['ruff', 'format', '--check', '--force-exclude']
+            cmdline.extend(['--config', config_file])
             cmdline.extend(file_map.keys())
 
             output = execute(
@@ -153,7 +157,9 @@ class RuffExtTool(BaseTool):
             for line in output.splitlines():
                 if line.startswith('Would reformat:'):
                     filename = line.split(':', 1)[1].strip()
-                    file_obj = file_map.get(filename)
+                    file_obj = get_file(filename)
+                    if not file_obj:
+                        raise Exception(f'Unknown file: {filename}')
                     file_obj.comment(
                         first_line=0,
                         text=f'File "{file_obj.dest_file}" is not formatted.',
